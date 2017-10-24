@@ -42,9 +42,36 @@ import java.util.Locale;
 
 //TODO URGENT add tdb object support, and use
 //TODO URGENT change rendering to XML inflation
-//TODO MAJOR move item to top upon edit
 
 public class ActivitiesList extends AppCompatActivity {
+
+    protected void moveToTop (int int_index)
+    {
+        TinyDB tdb = new TinyDB(getApplicationContext());
+        ArrayList<String> lts_activities_name = new ArrayList<>(tdb.getListString("activities_name"));
+        ArrayList<Integer> lti_activities_daily = new ArrayList<>(tdb.getListInt("activities_daily"));
+        ArrayList<Integer> lti_activities_done = new ArrayList<>(tdb.getListInt("activities_done"));
+        ArrayList<Long> ltl_activities_date = new ArrayList<>(tdb.getListLong("activities_date"));
+        ArrayList<Long> ltl_activities_date_last = new ArrayList<>(tdb.getListLong("activities_date_last"));
+        ArrayList<Integer> lti_activities_done_last = new ArrayList<>(tdb.getListInt("activities_done_last"));
+        ArrayList<Integer> lti_activities_record = new ArrayList<>(tdb.getListInt("activities_record"));
+        lts_activities_name.add(0, lts_activities_name.remove(int_index));
+        lti_activities_daily.add(0, lti_activities_daily.remove(int_index));
+        lti_activities_done.add(0, lti_activities_done.remove(int_index));
+        ltl_activities_date.add(0, ltl_activities_date.remove(int_index));
+        ltl_activities_date_last.add(0, ltl_activities_date_last.remove(int_index));
+        lti_activities_done_last.add(0, lti_activities_done_last.remove(int_index));
+        lti_activities_record.add(0, lti_activities_record.remove(int_index));
+        tdb.putListString("activities_name", lts_activities_name);
+        tdb.putListInt("activities_daily", lti_activities_daily);
+        tdb.putListInt("activities_done", lti_activities_done);
+        tdb.putListLong("activities_date", ltl_activities_date);
+        tdb.putListLong("activities_date_last", ltl_activities_date_last);
+        tdb.putListInt("activities_done_last", lti_activities_done_last);
+        tdb.putListInt("activities_record", lti_activities_record);
+
+        ((ScrollView) findViewById(R.id.scv_scoller)).scrollTo(0, 0);
+    }
 
     protected void editDone (int int_index, int int_change, boolean b_relative)
     {
@@ -66,6 +93,8 @@ public class ActivitiesList extends AppCompatActivity {
         }
         tdb.putListLong("activities_date_last", ltl_activities_date_last);
         tdb.putListInt("activities_done_last", lti_activities_done_last);
+
+        moveToTop(int_index);
 
         listActivities();
     }
