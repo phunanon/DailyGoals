@@ -40,8 +40,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-//TODO add tdb object support
-//TODO change rendering to XML inflation
+//TODO URGENT add tdb object support, and use
+//TODO URGENT change rendering to XML inflation
+//TODO MAJOR move item to top upon edit
 
 public class ActivitiesList extends AppCompatActivity {
 
