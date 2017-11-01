@@ -45,6 +45,7 @@ import java.util.Locale;
 
 public class ActivitiesList extends AppCompatActivity {
 
+
     protected void moveToTop (int int_index)
     {
         TinyDB tdb = new TinyDB(getApplicationContext());
@@ -73,6 +74,7 @@ public class ActivitiesList extends AppCompatActivity {
         ((ScrollView) findViewById(R.id.scv_scoller)).scrollTo(0, 0);
     }
 
+
     protected void editDone (int int_index, int int_change, boolean b_relative)
     {
         TinyDB tdb = new TinyDB(getApplicationContext());
@@ -99,6 +101,7 @@ public class ActivitiesList extends AppCompatActivity {
 
         listActivities();
     }
+
 
     protected void forgetActivity (int int_index)
     {
@@ -127,6 +130,7 @@ public class ActivitiesList extends AppCompatActivity {
 
         listActivities();
     }
+
 
     protected void listActivities ()
     {
@@ -320,6 +324,7 @@ public class ActivitiesList extends AppCompatActivity {
         }
     }
 
+
     protected void addActivity (String str_new_activity_name, Integer int_new_activity_daily, Integer int_new_activity_done, Date d_new_activity_date)
     {
         TinyDB tdb = new TinyDB(getApplicationContext());
@@ -348,6 +353,7 @@ public class ActivitiesList extends AppCompatActivity {
         listActivities();
     }
 
+
     protected void wipeActivities ()
     {
         new AlertDialog.Builder(ActivitiesList.this)
@@ -365,11 +371,13 @@ public class ActivitiesList extends AppCompatActivity {
             .show();
     }
 
+
     private void setBtnDateText (final Date d_date, final  Button btn_button)
     {
         SimpleDateFormat sdf_format = new SimpleDateFormat("EEE dd MMM yyyy", Locale.ENGLISH);
         btn_button.setText("Pick start ("+ sdf_format.format(d_date) +")");
     }
+
 
     private void pickDate (final Date d_target, final Button btn_open_dp_activity_date)
     {
@@ -390,6 +398,7 @@ public class ActivitiesList extends AppCompatActivity {
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         dialog.show();
     }
+
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -470,11 +479,13 @@ public class ActivitiesList extends AppCompatActivity {
         });
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activities_list, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -496,9 +507,12 @@ public class ActivitiesList extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         listActivities();
     }
+
+
 }
