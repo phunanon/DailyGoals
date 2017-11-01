@@ -81,6 +81,7 @@ public class ActivitiesList extends AppCompatActivity {
         lti_activities_done.set(int_index, (b_relative ? lti_activities_done.get(int_index) : 0) + int_change);
         tdb.putListInt("activities_done", lti_activities_done);
 
+      //
         final ArrayList<Long> ltl_activities_date_last = new ArrayList<>(tdb.getListLong("activities_date_last"));
         final ArrayList<Integer> lti_activities_done_last = new ArrayList<>(tdb.getListInt("activities_done_last"));
         if (b_relative) {
@@ -493,5 +494,11 @@ public class ActivitiesList extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        listActivities();
     }
 }
