@@ -218,7 +218,11 @@ public class ActivitiesList extends AppCompatActivity {
             tv_activity_done.setText(int_done.toString());
             tv_activity_of.setText("of");
             tv_activity_goal.setText(String.valueOf(int_goal));
-            tv_activity_progress.setText(String.valueOf(Math.abs(int_progress)) + (int_progress > 0 ? " over!" : (int_progress == 0 ? "" : " to go!" )));
+            if (int_progress == 0) {
+                tv_activity_progress.setText("All caught up!");
+            } else {
+                tv_activity_progress.setText(String.valueOf(Math.abs(int_progress)) + (int_progress > 0 ? " over!" : " to go!"));
+            }
             tv_activity_today.setText(String.valueOf(int_done_today) +" today ✔  (★ "+ String.valueOf(lti_activities_record.get(s)) +")");
             String str_half = String.valueOf(lti_activities_daily.get(s)/2);
             btn_remove_one.setText("-1");
