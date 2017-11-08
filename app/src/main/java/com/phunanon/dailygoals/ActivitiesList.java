@@ -502,7 +502,7 @@ public class ActivitiesList extends AppCompatActivity {
             case R.id.action_about:
                 new AlertDialog.Builder(ActivitiesList.this)
                     .setTitle("DailyGoals Help & About")
-                    .setMessage("Tap and hold an activity to remove it. This app was developed by Patrick Bowen (phunanon).")
+                    .setMessage("Tap and hold an activity to remove it. This app was developed by Patrick Bowen, and can be found at github.com/phunanon/DailyGoals")
                     .setPositiveButton("Cheers", null)
                     .show();
                 return true;
