@@ -223,7 +223,7 @@ public class ActivitiesList extends AppCompatActivity {
             } else {
                 tv_activity_progress.setText(String.valueOf(Math.abs(int_progress)) + (int_progress > 0 ? " over!" : " to go!"));
             }
-            tv_activity_today.setText(String.valueOf(int_done_today) +" today ✔  (★ "+ String.valueOf(lti_activities_record.get(s)) +")");
+            tv_activity_today.setText(String.valueOf(int_done_today) +" today "+ (int_done_today >= int_daily ? "\uD83D\uDC4D" : (int_done_today != 0 ? "\u23f3" : "\uD83D\uDC4E")) +"  (★ "+ String.valueOf(lti_activities_record.get(s)) +")");
             String str_half = String.valueOf(lti_activities_daily.get(s)/2);
             btn_remove_one.setText("-1");
             btn_remove_half.setText("-"+ str_half);
