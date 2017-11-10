@@ -83,7 +83,7 @@ public class ActivitiesList extends AppCompatActivity {
         lti_activities_done.set(int_index, (b_relative ? lti_activities_done.get(int_index) : 0) + int_change);
         tdb.putListInt("activities_done", lti_activities_done);
 
-      //
+        //
         final ArrayList<Long> ltl_activities_date_last = new ArrayList<>(tdb.getListLong("activities_date_last"));
         final ArrayList<Integer> lti_activities_done_last = new ArrayList<>(tdb.getListInt("activities_done_last"));
         if (b_relative) {
@@ -135,9 +135,9 @@ public class ActivitiesList extends AppCompatActivity {
     protected void listActivities ()
     {
         TableLayout tbl_activities = (TableLayout) findViewById(R.id.tbl_activities);
-      //Clear previous list
+        //Clear previous list
         tbl_activities.removeAllViews();
-      //Retrieve saved activities
+        //Retrieve saved activities
         TinyDB tdb = new TinyDB(getApplicationContext());
         final ArrayList<String> lts_activities_name = new ArrayList<>(tdb.getListString("activities_name"));
         final ArrayList<Integer> lti_activities_daily = new ArrayList<>(tdb.getListInt("activities_daily"));
@@ -196,6 +196,7 @@ public class ActivitiesList extends AppCompatActivity {
             Long lng_date = ltl_activities_date.get(s);
             Integer int_progress = int_done - int_goal;
             Integer int_done_today = (DateUtils.isToday(ltl_activities_date_last.get(s)) ? lti_activities_done_last.get(s) : 0);
+            Integer int_daily_record = lti_activities_record.get(s);
 
             tlr_activity.setPadding(16, 16, 16, 16);
             final TextView tv_activity_name = new TextView(getApplicationContext());
@@ -223,7 +224,12 @@ public class ActivitiesList extends AppCompatActivity {
             } else {
                 tv_activity_progress.setText(String.valueOf(Math.abs(int_progress)) + (int_progress > 0 ? " over!" : " to go!"));
             }
-            tv_activity_today.setText(String.valueOf(int_done_today) +" today "+ (int_done_today >= int_daily ? "\uD83D\uDC4D" : (int_done_today != 0 ? "\u23f3" : "\uD83D\uDC4E")) +"  (★ "+ String.valueOf(lti_activities_record.get(s)) +")");
+            tv_activity_today.setText(String.valueOf(int_done_today) +" today "+
+                    (int_done_today >= int_daily ?
+                            (int_done_today > int_daily_record ? "\uD83C\uDFC6" : "\uD83D\uDC4D") :
+                            (int_done_today != 0 ? "\u23f3" :
+                                    "\uD83D\uDC4E"))
+                    +"  (★ "+ String.valueOf(int_daily_record) +")");
             String str_half = String.valueOf(lti_activities_daily.get(s)/2);
             btn_remove_one.setText("-1");
             btn_remove_half.setText("-"+ str_half);
@@ -274,17 +280,17 @@ public class ActivitiesList extends AppCompatActivity {
                     et_done.setText(((Pair<Integer, Integer>)btn_set.getTag()).second.toString());
                     et_done.setTextColor(0xff000000);
                     new AlertDialog.Builder(ActivitiesList.this)
-                        .setTitle("Enter number manually")
-                        .setView(et_done)
-                        .setPositiveButton("Set", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton)
-                            {
-                                editDone(((Pair<Integer, Integer>)btn_set.getTag()).first, Integer.parseInt(et_done.getText().toString()), false);
-                                listActivities();
-                            }
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .show();
+                            .setTitle("Enter number manually")
+                            .setView(et_done)
+                            .setPositiveButton("Set", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton)
+                                {
+                                    editDone(((Pair<Integer, Integer>)btn_set.getTag()).first, Integer.parseInt(et_done.getText().toString()), false);
+                                    listActivities();
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
                 }
             });
 
@@ -309,17 +315,17 @@ public class ActivitiesList extends AppCompatActivity {
                 @Override
                 public boolean onLongClick(View v) {
                     new AlertDialog.Builder(ActivitiesList.this)
-                        .setTitle("Remove activity")
-                        .setMessage("Are you sure you wish delete the activity '"+ tv_activity_name.getText() +"'?")
-                        .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton)
-                            {
-                                forgetActivity(Integer.parseInt(tlr_activity.getTag().toString()));
-                                Snackbar.make(findViewById(R.id.fab_add_activity), "Activity removed", Snackbar.LENGTH_LONG).show();
-                            }
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .show();
+                            .setTitle("Remove activity")
+                            .setMessage("Are you sure you wish delete the activity '"+ tv_activity_name.getText() +"'?")
+                            .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton)
+                                {
+                                    forgetActivity(Integer.parseInt(tlr_activity.getTag().toString()));
+                                    Snackbar.make(findViewById(R.id.fab_add_activity), "Activity removed", Snackbar.LENGTH_LONG).show();
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
                     return false;
                 }
             });
@@ -361,18 +367,18 @@ public class ActivitiesList extends AppCompatActivity {
     protected void wipeActivities ()
     {
         new AlertDialog.Builder(ActivitiesList.this)
-            .setTitle("Wipe activities")
-            .setMessage("Are you sure you wish to wipe all activities in your list?")
-            .setPositiveButton("Wipe", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton)
-                {
-                    TinyDB tdb = new TinyDB(getApplicationContext());
-                    tdb.clear();
-                    listActivities();
-                }
-            })
-            .setNegativeButton("Cancel", null)
-            .show();
+                .setTitle("Wipe activities")
+                .setMessage("Are you sure you wish to wipe all activities in your list?")
+                .setPositiveButton("Wipe", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton)
+                    {
+                        TinyDB tdb = new TinyDB(getApplicationContext());
+                        tdb.clear();
+                        listActivities();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
 
@@ -388,18 +394,18 @@ public class ActivitiesList extends AppCompatActivity {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(d_target);
         DatePickerDialog dialog = new DatePickerDialog(ActivitiesList.this,
-            new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-                {
-                    calendar.set(Calendar.YEAR, year);
-                    calendar.set(Calendar.MONTH, monthOfYear);
-                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    d_target.setTime(calendar.getTimeInMillis());
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+                    {
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, monthOfYear);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        d_target.setTime(calendar.getTimeInMillis());
 
-                    setBtnDateText(d_target, btn_open_dp_activity_date);
-                }
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                        setBtnDateText(d_target, btn_open_dp_activity_date);
+                    }
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         dialog.show();
     }
 
@@ -450,23 +456,23 @@ public class ActivitiesList extends AppCompatActivity {
 
 
                 new AlertDialog.Builder(ActivitiesList.this)
-                    .setTitle("Add new daily activity")
-                    .setMessage("Please enter details of a new activity.")
-                    .setView(ll_new_activity)
-                    .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton)
-                        {
-                            try {
-                                addActivity(et_activity_name.getText().toString(), Integer.parseInt(eti_activity_daily.getText().toString()), Integer.parseInt(eti_activity_done.getText().toString()), d_activity_date);
-                                Snackbar.make(findViewById(R.id.fab_add_activity), "New activity added!", Snackbar.LENGTH_LONG).show();
-                                listActivities();
-                            } catch (Exception e) {
-                                Snackbar.make(findViewById(R.id.fab_add_activity), e.toString(), Snackbar.LENGTH_LONG).show();
+                        .setTitle("Add new daily activity")
+                        .setMessage("Please enter details of a new activity.")
+                        .setView(ll_new_activity)
+                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton)
+                            {
+                                try {
+                                    addActivity(et_activity_name.getText().toString(), Integer.parseInt(eti_activity_daily.getText().toString()), Integer.parseInt(eti_activity_done.getText().toString()), d_activity_date);
+                                    Snackbar.make(findViewById(R.id.fab_add_activity), "New activity added!", Snackbar.LENGTH_LONG).show();
+                                    listActivities();
+                                } catch (Exception e) {
+                                    Snackbar.make(findViewById(R.id.fab_add_activity), e.toString(), Snackbar.LENGTH_LONG).show();
+                                }
                             }
-                        }
-                    })
-                    .setNegativeButton("Cancel", null)
-                    .show();
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
             }
         });
 
@@ -501,10 +507,10 @@ public class ActivitiesList extends AppCompatActivity {
                 return true;
             case R.id.action_about:
                 new AlertDialog.Builder(ActivitiesList.this)
-                    .setTitle("DailyGoals Help & About")
-                    .setMessage("Tap and hold an activity to remove it. This app was developed by Patrick Bowen, and can be found at github.com/phunanon/DailyGoals")
-                    .setPositiveButton("Cheers", null)
-                    .show();
+                        .setTitle("DailyGoals Help & About")
+                        .setMessage("Tap and hold an activity to remove it. This app was developed by Patrick Bowen, and can be found at github.com/phunanon/DailyGoals")
+                        .setPositiveButton("Cheers", null)
+                        .show();
                 return true;
         }
 
