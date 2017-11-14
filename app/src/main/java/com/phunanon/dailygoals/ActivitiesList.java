@@ -83,7 +83,7 @@ public class ActivitiesList extends AppCompatActivity {
         lti_activities_done.set(int_index, (b_relative ? lti_activities_done.get(int_index) : 0) + int_change);
         tdb.putListInt("activities_done", lti_activities_done);
 
-        //
+        //Re-calculate daily record
         final ArrayList<Long> ltl_activities_date_last = new ArrayList<>(tdb.getListLong("activities_date_last"));
         final ArrayList<Integer> lti_activities_done_last = new ArrayList<>(tdb.getListInt("activities_done_last"));
         if (b_relative) {
@@ -97,6 +97,17 @@ public class ActivitiesList extends AppCompatActivity {
         tdb.putListLong("activities_date_last", ltl_activities_date_last);
         tdb.putListInt("activities_done_last", lti_activities_done_last);
 
+        moveToTop(int_index);
+
+        listActivities();
+    }
+
+    protected void editDaily (int int_index, int int_new_daily)
+    {
+        TinyDB tdb = new TinyDB(getApplicationContext());
+        ArrayList<Integer> lti_activities_daily = new ArrayList<>(tdb.getListInt("activities_daily"));
+        lti_activities_daily.set(int_index, int_new_daily);
+        tdb.putListInt("activities_daily", lti_activities_daily);
         moveToTop(int_index);
 
         listActivities();
@@ -270,22 +281,22 @@ public class ActivitiesList extends AppCompatActivity {
             btn_add_half.setTag(new Pair<Integer, Integer>(s, int_daily/2));
             btn_add_half.setOnClickListener(ocl);
 
-            btn_set.setTag(new Pair<Integer, Integer>(s, int_done));
+            btn_set.setTag(new Pair<Integer, Integer>(s, int_daily));
             btn_set.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v)
                 {
-                    final EditText et_done = new EditText(getApplicationContext());
-                    et_done.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    et_done.setText(((Pair<Integer, Integer>)btn_set.getTag()).second.toString());
-                    et_done.setTextColor(0xff000000);
+                    final EditText et_goal = new EditText(getApplicationContext());
+                    et_goal.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    et_goal.setText(((Pair<Integer, Integer>)btn_set.getTag()).second.toString());
+                    et_goal.setTextColor(0xff000000);
                     new AlertDialog.Builder(ActivitiesList.this)
-                            .setTitle("Enter number manually")
-                            .setView(et_done)
-                            .setPositiveButton("Set", new DialogInterface.OnClickListener() {
+                            .setTitle("Modify daily goal")
+                            .setView(et_goal)
+                            .setPositiveButton("Set new goal", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton)
                                 {
-                                    editDone(((Pair<Integer, Integer>)btn_set.getTag()).first, Integer.parseInt(et_done.getText().toString()), false);
+                                    editDaily(((Pair<Integer, Integer>)btn_set.getTag()).first, Integer.parseInt(et_goal.getText().toString()));
                                     listActivities();
                                 }
                             })
