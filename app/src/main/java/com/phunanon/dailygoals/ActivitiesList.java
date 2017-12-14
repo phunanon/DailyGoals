@@ -371,6 +371,8 @@ public class ActivitiesList extends AppCompatActivity {
         tdb.putListInt("activities_done_last", lti_activities_done_last);
         tdb.putListInt("activities_record", lti_activities_record);
 
+        moveToTop(lts_activities_name.size() - 1);
+
         listActivities();
     }
 
