@@ -474,7 +474,13 @@ public class ActivitiesList extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int whichButton)
                             {
                                 try {
-                                    addActivity(et_activity_name.getText().toString(), Integer.parseInt(eti_activity_daily.getText().toString()), Integer.parseInt(eti_activity_done.getText().toString()), d_activity_date);
+                                    String str_new_activity_name = et_activity_name.getText().toString();
+                                    String str_new_daily = eti_activity_daily.getText().toString();
+                                    String str_new_done = eti_activity_done.getText().toString();
+                                    if (str_new_activity_name.length() == 0) { str_new_activity_name = "Activity"; }
+                                    if (str_new_daily.length() == 0) { str_new_daily = "1"; }
+                                    if (str_new_done.length() == 0) { str_new_done = "0"; }
+                                    addActivity(str_new_activity_name, Integer.parseInt(str_new_daily), Integer.parseInt(str_new_done), d_activity_date);
                                     Snackbar.make(findViewById(R.id.fab_add_activity), "New activity added!", Snackbar.LENGTH_LONG).show();
                                     listActivities();
                                 } catch (Exception e) {
