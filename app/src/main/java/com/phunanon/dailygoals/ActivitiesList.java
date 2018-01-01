@@ -442,7 +442,13 @@ public class ActivitiesList extends AppCompatActivity {
                 final EditText eti_activity_daily = new EditText(getApplicationContext());
                 final EditText eti_activity_done = new EditText(getApplicationContext());
                 final Button btn_open_dp_activity_date = new Button(getApplicationContext());
-                final Date d_activity_date = new Date();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(new Date()); // compute start of the day for the timestamp
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
+                final Date d_activity_date = cal.getTime();
                 eti_activity_daily.setInputType(InputType.TYPE_CLASS_NUMBER);
                 eti_activity_done.setInputType(InputType.TYPE_CLASS_NUMBER);
                 et_activity_name.setHint("Activity name");
